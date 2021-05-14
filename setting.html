@@ -303,16 +303,16 @@
 		mui.plusReady(function() {
 			var state = app.getState();
 			$("#user").val(state.account);
-			// plus.share.getServices(function(s) {
-			// 	if (s && s.length > 0) {
-			// 		for (var i = 0; i < s.length; i++) {
-			// 			var t = s[i];
-			// 			shares[t.id] = t;
-			// 		}
-			// 	}
-			// }, function() {
-			// 	console.log("获取分享服务列表失败");
-			// });
+			plus.share.getServices(function(s) {
+				if (s && s.length > 0) {
+					for (var i = 0; i < s.length; i++) {
+						var t = s[i];
+						shares[t.id] = t;
+					}
+				}
+			}, function() {
+				console.log("获取分享服务列表失败");
+			});
 		});
 		 //分享链接点击事件
 		document.getElementById("share").addEventListener('tap', function() {
@@ -433,13 +433,13 @@
 						 */
 						plus.webview.getLaunchWebview().show("pop-in");
 						//若启动页不是登录页，则需通过如下方式打开登录页
-						mui.openWindow({
-							url: 'login.html',
-							id: 'login',
-							show: {
-								aniShow: 'pop-in'
-							}
-						});
+//						mui.openWindow({
+//							url: 'login.html',
+//							id: 'login',
+//							show: {
+//								aniShow: 'pop-in'
+//							}
+//						});
 						break;
 					case 2:
 						plus.runtime.quit();

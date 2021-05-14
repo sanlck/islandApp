@@ -2,7 +2,7 @@
 var config = {
 
 	// "serverHost": "http://121.5.211.254:8081",
-	"serverHost": "http://localhost:8081",
+	"serverHost": "http://192.168.18.104:8081",
 	"czjllist":"/jx3-czjl/gets"  ,//充值记录
 	"zhlist":"/jx3-zh/getzh",//根据用户名获取账号
 	"addczjl":"/jx3-czjl/addczjl" ,//添加剑三充值记录
@@ -14,7 +14,7 @@ var config = {
 	"editstatements":"/jx3-statements/edit" ,//修改骚话列表
 	"login":"/c-user/login" ,//登录
 	"addJx3user":"/c-user/addJx3",//注册剑三账号
-	"pveitem":"/jx3-pveitem/getByName"//pve黑白名单
+	"pveitem":"/jx3-pveitem/getByName",//黑白名单
 }
 
 function getConfigValue(name) {

@@ -28,6 +28,7 @@
 					 contentType: "application/json;charset=UTF-8",
 					 async:false,//同步
 		             success: function(data){
+						 alert(data.code);
 						 if(data.code==200){
 							 plus.storage.setItem("username",data.username);
 							 authed=true;

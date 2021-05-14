@@ -146,7 +146,7 @@
 									 var data=data.data;
 									 var html = ''; 
 									 $.each(data.records, function(commentIndex, records){
-										 // console.log(records);
+										 console.log(records);
 											$("#zh").append("<option value='"+records['zhname']+"'>"+records['zhname']+"</option>");
 									 });
 									 $('#resText').before(html);
