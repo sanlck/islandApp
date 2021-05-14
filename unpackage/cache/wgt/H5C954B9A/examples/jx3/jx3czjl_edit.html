@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>jx3goldprice_edi</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/M_select.css"/>
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<style type="text/css">
+			
+			#add{
+				width: 90%;
+				height:30px;
+				margin-left: 20px;
+				margin-right: 20px;
+				font-size: 12px;
+
+			}
+			#submit{
+				width: 90%;
+				margin-left: 20px;
+				margin-right: 20px;
+			}
+			#orderNo,#amt,#ordertime{
+				width: 90%;
+				height:40px;
+				margin-left: 20px;
+				margin-right: 20px;
+				margin-top: 30px;
+				font-size: 12px;
+			}
+			#pullrefresh{
+				background-color:#fffbea ;
+			}
+			
+			body{
+				background-color: #fffbea;
+			}
+			#ti{
+				height: 30px;
+				background-color: #C0C0C0;
+			}
+			#title{
+				color: white;
+			}
+			.mui-bar-nav{
+				background-color: #000000;
+			}
+			#zh{
+				width: 90%;
+				height: 37px;
+				margin-left: 20px;
+				margin-right: 20px;
+				font-size: 12px;
+				background-color: #ffffff;
+				margin-bottom: -1px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="title">添加充值记录</h1>
+		</header>
+		<div class="d">
+			<div id="ti"></div>
+			<div style="height: 40px;"></div>
+			<div>
+				<select class="select03" id="zh">
+				</select>
+			</div>
+			<input type="text"  id="orderNo" value="" placeholder="请输入订单号"/>
+			<input type="text"  id="amt" value="" placeholder="请输入金额" style="margin-top: 15px;"/>
+			<input type="date"  id="ordertime" value="" style="margin-top: 15px;"/>
+		</div>
+		<div>
+			<button id="submit" type="button" data-loading-icon="mui-spinner mui-spinner-custom" class="mui-btn mui-btn-primary">提交</button>
+		</div>
+		
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/jquery-3.0.0.js"></script>
+		<script src="../../js/jquery-3.0.0.min.js"></script>
+		<script src="../../js/M_select.js"></script>
+		<script src="../../js/app.js"></script>
+		<script src="../../js/readConfig.js"></script>
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',					
+				},
+			});
+			mui.plusReady(function(){
+				getzh();
+				$(".select03").M_select({
+					"ico":"3",
+					"radius":"2px",
+					"Title":"",
+					"inputName":"selected_value"
+				});
+			});
+			mui(document.body).on('tap', '.mui-btn', function(e) {
+				mui(this).button('loading');
+				add();
+				mui(this).button('reset');
+			});
+			function add(){
+				var options=$("#zh option:selected");
+				var orderNo=$("#orderNo").val();
+				var amt=$("#amt").val();
+				var ordertime=$("#ordertime").val();
+				var zh=options.val();
+				var state = app.getState();
+				$.ajax({
+				             type: "POST",
+							 url: getConfigValue('serverHost')+getConfigValue('addczjl'),
+				             data: JSON.stringify({'zh':zh,'username':state,'orderNo':orderNo,'amt':amt,'ordertime':ordertime}),
+				             dataType: "json",
+							 contentType: "application/json;charset=UTF-8",
+				             success: function(data){
+								 console.log(data.code);
+								 if(data.code==200){
+									 mui.toast(data.msg);
+								 }else{
+									 mui.toast(data.msg);
+								 }
+							 
+						  }
+				});
+			}
+			function getzh(){
+				var state = app.getState();
+				$.ajax({
+				             type: "POST",
+							 url: getConfigValue('serverHost')+getConfigValue('zhlist'),
+				             data: JSON.stringify({"currentPage":1,'username':state.account}),
+				             dataType: "json",
+							 async:false,
+							 contentType: "application/json;charset=UTF-8",
+				             success: function(data){
+								 if(data.code==200){
+									 // $('#resText').empty();   //清空resText里面的所有内容
+									 var data=data.data;
+									 var html = ''; 
+									 $.each(data.records, function(commentIndex, records){
+										 console.log(records);
+											$("#zh").append("<option value='"+records['zhname']+"'>"+records['zhname']+"</option>");
+									 });
+									 $('#resText').before(html);
+								 } 
+						  }
+				});
+				
+			}
+		</script>
+	</body>
+
+</html>
